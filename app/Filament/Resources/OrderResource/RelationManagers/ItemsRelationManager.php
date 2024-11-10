@@ -3,10 +3,10 @@
 namespace App\Filament\Resources\OrderResource\RelationManagers;
 
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;  // Updated import
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;  // Updated import
 
 class ItemsRelationManager extends RelationManager
 {
@@ -14,7 +14,7 @@ class ItemsRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'id';
 
-    public function form(Form $form): Form  // Removed static keyword
+    public function form(Form $form): Form
     {
         return $form
             ->schema([
@@ -34,7 +34,7 @@ class ItemsRelationManager extends RelationManager
             ]);
     }
 
-    public function table(Table $table): Table  // Removed static keyword
+    public function table(Table $table): Table
     {
         return $table
             ->columns([
@@ -55,7 +55,9 @@ class ItemsRelationManager extends RelationManager
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ]);
     }
 }

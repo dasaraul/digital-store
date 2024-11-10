@@ -6,10 +6,10 @@ use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers;
 use App\Models\Order;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;  // Updated import
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;  // Updated import
 
 class OrderResource extends Resource
 {
@@ -54,13 +54,15 @@ class OrderResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('total_amount')
                     ->money('idr'),
-                Tables\Columns\BadgeColumn::make('status')
-                    ->colors([
-                        'danger' => 'cancelled',
-                        'warning' => 'pending',
-                        'primary' => 'processing',
-                        'success' => 'completed',
-                    ]),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'cancelled' => 'danger',
+                        'pending' => 'warning',
+                        'processing' => 'primary',
+                        'completed' => 'success',
+                        default => 'secondary',
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime(),
             ])
@@ -78,7 +80,9 @@ class OrderResource extends Resource
                 Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ]);
     }
 
