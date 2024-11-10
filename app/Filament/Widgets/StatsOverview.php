@@ -14,22 +14,22 @@ class StatsOverview extends BaseWidget
         return [
             Card::make('Total Orders', Order::count())
                 ->description('Total orders in the system')
-                ->descriptionIcon('heroicon-s-shopping-cart')
+                ->descriptionIcon('heroicon-o-shopping-cart')
                 ->color('primary'),
             
             Card::make('Pending Orders', Order::where('status', 'pending')->count())
                 ->description('Orders waiting to be processed')
-                ->descriptionIcon('heroicon-s-clock')
+                ->descriptionIcon('heroicon-o-clock')
                 ->color('warning'),
             
             Card::make('Out of Stock Products', Product::where('stock', 0)->count())
                 ->description('Products that need restocking')
-                ->descriptionIcon('heroicon-s-exclamation')
+                ->descriptionIcon('heroicon-o-exclamation-triangle')
                 ->color('danger'),
             
-            Card::make('Total Revenue', 'Rp ' . number_format(Order::sum('total_amount'), 0, ',', '.'))
-                ->description('Total sales revenue')
-                ->descriptionIcon('heroicon-s-currency-dollar')
+            Card::make('Total Revenue', 'Rp ' . number_format(Order::where('status', 'completed')->sum('total_amount'), 0, ',', '.'))
+                ->description('From completed orders')
+                ->descriptionIcon('heroicon-o-currency-dollar')
                 ->color('success'),
         ];
     }
