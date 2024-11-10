@@ -4,22 +4,24 @@ namespace App\Filament\Pages;
 
 use Filament\Forms;
 use Filament\Pages\Page;
+use Filament\Forms\Form;
 use Filament\Forms\Components\Card;
 use Filament\Notifications\Notification;
 
 class WhatsAppSettings extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-ellipsis'; // Updated icon
+    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-ellipsis';
     protected static ?string $title = 'WhatsApp Settings';
     protected static ?string $slug = 'whatsapp-settings';
+    protected static string $view = 'filament.pages.whatsapp-settings';
     
     public $whatsapp_number;
     public $default_message;
     public $business_hours;
     
-    protected function getFormSchema(): array
+    public function form(Form $form): Form
     {
-        return [
+        return $form->schema([
             Card::make()
                 ->schema([
                     Forms\Components\TextInput::make('whatsapp_number')
@@ -35,8 +37,8 @@ class WhatsAppSettings extends Page
                     Forms\Components\Textarea::make('business_hours')
                         ->label('Business Hours')
                         ->placeholder('Monday - Friday: 9 AM - 6 PM...')
-                ])
-        ];
+                ])->columns(1)
+        ]);
     }
     
     public function mount(): void
@@ -46,11 +48,13 @@ class WhatsAppSettings extends Page
         $this->business_hours = settings('business_hours', 'Monday - Friday: 9 AM - 6 PM\nSaturday: 9 AM - 3 PM\nSunday: Closed');
     }
     
-    public function submit(): void
+    public function save(): void
     {
-        settings(['whatsapp_number' => $this->whatsapp_number]);
-        settings(['whatsapp_default_message' => $this->default_message]);
-        settings(['business_hours' => $this->business_hours]);
+        settings([
+            'whatsapp_number' => $this->whatsapp_number,
+            'whatsapp_default_message' => $this->default_message,
+            'business_hours' => $this->business_hours,
+        ]);
         
         Notification::make()
             ->title('Settings saved successfully')

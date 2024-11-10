@@ -1,0 +1,19 @@
+@config './tailwind.config.js';
+
+@import '../../vendor/filament/filament/resources/css/theme.css';
+
+.fi-sidebar {
+    @apply bg-gradient-to-b from-primary-600 to-primary-800;
+}
+
+.fi-sidebar-header {
+    @apply bg-transparent;
+}
+
+.fi-sidebar-item-active {
+    @apply bg-white/10 text-white;
+}
+
+.fi-main-ctn {
+    @apply bg-gray-50;
+}
