@@ -14,7 +14,7 @@ class ItemsRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'id';
 
-    public static function form(Form $form): Form
+    public function form(Form $form): Form  // Removed static keyword
     {
         return $form
             ->schema([
@@ -34,7 +34,7 @@ class ItemsRelationManager extends RelationManager
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table  // Removed static keyword
     {
         return $table
             ->columns([
